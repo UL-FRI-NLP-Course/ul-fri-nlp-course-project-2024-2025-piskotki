@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+report.bbl
+report.aux
+report.blg
+report.log
+report.out
