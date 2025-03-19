@@ -56,7 +56,7 @@
 %----------------------------------------------------------------------------------------
 
 \Abstract{
-The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here.
+We propose the development of a conversational agent that utilizes Retrieval-Augmented Generation (RAG) to improve the accuracy and relevance of responses by grounding them in real-time external knowledge. Unlike traditional large language models (LLMs) that rely solely on pre-trained data, our envisioned system will retrieve information—primarily from Wikipedia—to enhance its ability to answer general knowledge and current events queries. The project will explore different approaches to model architecture, including the use of open-source LLMs and fine-tuning smaller pre-trained models. Key components will include a Wikipedia-focused retrieval system, a query processing pipeline, and context integration for response generation. To evaluate our approach, we plan to benchmark the RAG-enhanced system against a non-augmented baseline using metrics such as factual accuracy, hallucination rate, and response relevance. This proposal outlines the initial design and objectives of a system aimed at demonstrating the potential of RAG in conversational AI.
 }
 
 %----------------------------------------------------------------------------------------
@@ -139,8 +139,10 @@ To measure the effectiveness of our RAG implementation, we will establish a benc
 \item Use external benchmarking and ideas from \cite{chen} 
 \end{itemize}
 
-This comparative analysis will provide quantitative evidence of how external knowledge retrieval impacts model performance across different query types and knowledge domains.
+\subsection*{Datasets, data and corpus}
+To support our project, we will use a variety of datasets and corpora. Our primary corpus will be Wikipedia Dump, which provides a broad spectrum of general knowledge. In addition, we will utilize Wikidata to complement Wikipedia dump, offering structured knowledge and detailed entity relationships for enhanced context. To ensure our data remains up-to-date, we will continuously scrape Wikipedia pages for the latest updates. For evaluation purposes, we plan to use datasets like Natural Questions to benchmark retrieval and generation performance, along with TriviaQA to assess factual accuracy.  
 
+This comparative analysis will provide quantitative evidence of how external knowledge retrieval impacts model performance across different query types and knowledge domains.
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
