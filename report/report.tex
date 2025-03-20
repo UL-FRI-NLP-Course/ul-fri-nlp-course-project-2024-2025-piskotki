@@ -96,32 +96,32 @@ Complementing this, Chen et al. \cite{chen} propose the Retrieval-Augmented Gene
 %------------------------------------------------
 
 \section*{Initial Idea}
-\subsection*{Initial Ideas for RAG-Enhanced LLM System}
+Initial Ideas for RAG-Enhanced LLM System
 
-Our plan is to create a conversational agent using Naive RAG implementation \cite{gao} for a general knowledge LLM with Wikipedia as the primary external information source.
+Our plan is to create a conversational agent using Naive RAG implementation \cite{gao} for a general knowledge LLM with Wikipedia and/or some news outlet as the primary external information source. Since most of the pretrained models like LLama and DeepSeek have been trained on Wikipedia already, the best way to implement RAG for it would be to try to supplement the queries with data after the cut-off date, before which the model was trained.
 
-\subsection*{Model Foundation}
+Model Foundation
 Our work will utilize a Large Language Model (LLM) as the foundation for the RAG system. We have two potential approaches:
 
-\begin{itemize}
+\begin{itemize}[itemsep=0em]
 \item Leverage an existing open-source LLM such as LLAMA or similar models, which would reduce computational requirements but may limit customization
 \item Train a smaller custom model with faculty's high performance compute.
 \end{itemize}
 Given resource constraints, we anticipate using a pre-trained model like LLAMA that can be efficiently fine-tuned or adapted to our specific use case without extensive retraining.
 
-\subsection*{IInformation Retrieval Component}
+Information Retrieval Component
 The system will incorporate a web scraping module focused primarily on Wikipedia as an information source due to its breadth of knowledge and structural consistency. This will involve:
 
-\begin{itemize}
+\begin{itemize}[itemsep=0em]
 \item Developing a robust web scraper capable of efficiently retrieving Wikipedia articles
 \item Implementing rate limiting and caching strategies to respect website policies and reduce redundant requests
 \item Creating parsers to extract relevant content while preserving semantic structure
 \end{itemize}
 
-\subsection*{Query Processing System}
+Query Processing System
 A critical challenge will be developing an effective query processing system that can:
 
-\begin{itemize}
+\begin{itemize}[itemsep=0em]
 \item Extract key information needs from potentially ambiguous user prompts
 \item Transform these needs into specific search queries optimized for Wikipedia's search system
 \item Handle disambiguation when multiple possible interpretations exist
@@ -129,10 +129,10 @@ A critical challenge will be developing an effective query processing system tha
 \item Provide context from retrieved documents in a LLM frendly way, so not including too much information and ranking it based on relevance.
 \end{itemize}
 
-\subsection*{Evaluation Framework}
+Evaluation Framework
 To measure the effectiveness of our RAG implementation, we will establish a benchmark comparing:
 
-\begin{itemize}
+\begin{itemize}[itemsep=0em]
 \item Performance of the base LLM without retrieval augmentation
 \item The same model enhanced with our RAG system
 \item Metrics will include factual accuracy, hallucination reduction rate, response relevance, and response completeness
