@@ -96,11 +96,10 @@ Complementing this, Chen et al. \cite{chen} propose the Retrieval-Augmented Gene
 %------------------------------------------------
 
 \section*{Initial Idea}
-Initial Ideas for RAG-Enhanced LLM System
 
 Our plan is to create a conversational agent using Naive RAG implementation \cite{gao} for a general knowledge LLM with Wikipedia and/or some news outlet as the primary external information source. Since most of the pretrained models like LLama and DeepSeek have been trained on Wikipedia already, the best way to implement RAG for it would be to try to supplement the queries with data after the cut-off date, before which the model was trained.
 
-Model Foundation
+\subsection*{Model Foundation}
 Our work will utilize a Large Language Model (LLM) as the foundation for the RAG system. We have two potential approaches:
 
 \begin{itemize}[itemsep=0em]
@@ -109,7 +108,7 @@ Our work will utilize a Large Language Model (LLM) as the foundation for the RAG
 \end{itemize}
 Given resource constraints, we anticipate using a pre-trained model like LLAMA that can be efficiently fine-tuned or adapted to our specific use case without extensive retraining.
 
-Information Retrieval Component
+\subsection*{Information Retrieval Component}
 The system will incorporate a web scraping module focused primarily on Wikipedia as an information source due to its breadth of knowledge and structural consistency. This will involve:
 
 \begin{itemize}[itemsep=0em]
@@ -118,7 +117,7 @@ The system will incorporate a web scraping module focused primarily on Wikipedia
 \item Creating parsers to extract relevant content while preserving semantic structure
 \end{itemize}
 
-Query Processing System
+\subsection*{Query Processing System}
 A critical challenge will be developing an effective query processing system that can:
 
 \begin{itemize}[itemsep=0em]
@@ -129,7 +128,7 @@ A critical challenge will be developing an effective query processing system tha
 \item Provide context from retrieved documents in a LLM frendly way, so not including too much information and ranking it based on relevance.
 \end{itemize}
 
-Evaluation Framework
+\subsection*{Evaluation Framework}
 To measure the effectiveness of our RAG implementation, we will establish a benchmark comparing:
 
 \begin{itemize}[itemsep=0em]
@@ -142,7 +141,7 @@ To measure the effectiveness of our RAG implementation, we will establish a benc
 This comparative analysis will provide quantitative evidence of how external knowledge retrieval impacts model performance across different query types and knowledge domains.
 
 \subsection*{Datasets, data and corpus}
-To support our project, we will use a variety of datasets and corpora. Our primary corpus will be Wikipedia Dump, which provides a broad spectrum of general knowledge. In addition, we will utilize Wikidata to complement Wikipedia dump, offering structured knowledge and detailed entity relationships for enhanced context. To ensure our data remains up-to-date, we will continuously scrape Wikipedia pages for the latest updates. For evaluation purposes, we plan to use datasets like Natural Questions to benchmark retrieval and generation performance, along with TriviaQA to assess factual accuracy.  
+To support our project, we will use a variety of datasets and corpora. Our primary corpus will be Wikipedia Dump, which provides a broad spectrum of general knowledge. In addition, we will utilize Wikidata to complement Wikipedia dump, offering structured knowledge and detailed entity relationships for enhanced context. To ensure our data remains up-to-date, we will continuously scrape Wikipedia pages for the latest updates. For evaluation purposes, we plan to use datasets like Natural Questions\footnote{ai.google.com/research/NaturalQuestions} to benchmark retrieval and generation performance, along with TriviaQA\footnote{nlp.cs.washington.edu/triviaqa} to assess factual accuracy.  
 
 
 
