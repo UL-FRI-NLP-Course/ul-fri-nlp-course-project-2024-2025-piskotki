@@ -4,10 +4,14 @@ import os
 import signal
 import re
 from bs4 import BeautifulSoup, Tag
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
 
 # Hardcoded file names
 INPUT_FILE = 'video_game_wikipedia_pages.txt'
-OUTPUT_FILE = 'video_game_descriptions.json'
+FAISS_INDEX_FILE = 'vector.index'
+OUTPUT_FILE = 'video_game_index_mapping.json'
 
 # Prepare session with desktop User-Agent
 session = requests.Session()
@@ -25,6 +29,25 @@ def handle_sigint(signum, frame):
     stop_signal = True
 
 signal.signal(signal.SIGINT, handle_sigint)
+
+# Load model for embedding
+# alternatives: msmarco-MiniLM-L6-cos-v5, multi-qa-MiniLM-L6-cos-v1
+model = SentenceTransformer("all-MiniLM-L6-v2")
+model = model.to('cuda') # if you have a GPU, otherwise remove this line
+
+# Setup FAISS index (initialize)
+dimension = 384  # MiniLM vector size
+if os.path.exists(FAISS_INDEX_FILE):
+    index = faiss.read_index(FAISS_INDEX_FILE)
+else:
+    index = faiss.IndexFlatL2(dimension)
+    
+# Load or initialize mapping
+if os.path.exists(OUTPUT_FILE):
+    with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
+        mapping = json.load(f)
+else:
+    mapping = {}
 
 def scrape_page(url):
     resp = session.get(url)
@@ -57,13 +80,10 @@ def scrape_page(url):
             text = re.sub(r"'\s+", "'", text)
             if text:
                 description_texts.append(text)
-
-    data = {
-        'url': url,
-        'title': soup.find('h1', id='firstHeading').get_text(strip=True),
-        'description': description_texts
-    }
-    return data
+    
+    full_text = " ".join(description_texts)
+    title = soup.find('h1', id='firstHeading').get_text(strip=True)
+    return title, full_text
 
 
 def main():
@@ -71,35 +91,29 @@ def main():
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
         urls = [line.strip() for line in f if line.strip()]
 
-    # Load existing output if it exists
-    output_data = {}
-    if os.path.exists(OUTPUT_FILE):
-        with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
-            try:
-                output_data = json.load(f)
-            except json.JSONDecodeError:
-                pass
-
-    completed = set(output_data.keys())
+    completed_titles = set(mapping.values())
 
     for url in urls:
         if stop_signal:
             print('Interrupted; stopping early.')
             break
         try:
-            page_data = scrape_page(url)
-            title = page_data['title']
-            if title in completed:
+            title, text = scrape_page(url)
+            if title in completed_titles:
                 continue
+            
+            embedding = model.encode(text).astype('float32')
 
-            # Insert into output structure
-            output_data[title] = {
-                'description': page_data['description']
-            }
+            # Add to FAISS
+            index.add(np.expand_dims(embedding, axis=0))
+            # Record mapping (store title, URL and text)
+            mapping[str(index.ntotal - 1)] = {'title': title, 'url': url, 'text': text}
 
-            # Save progress after each page
+            # Save index and mapping
+            faiss.write_index(index, FAISS_INDEX_FILE)
             with open(OUTPUT_FILE, 'w', encoding='utf-8') as out:
-                json.dump(output_data, out, ensure_ascii=False, indent=4)
+                json.dump(mapping, out, ensure_ascii=False, indent=4)
+
             print(f"Saved {title}")
         except Exception as e:
             print(f"Error scraping {url}: {e}")
