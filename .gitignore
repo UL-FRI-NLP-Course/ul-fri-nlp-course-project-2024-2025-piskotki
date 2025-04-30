@@ -135,3 +135,6 @@ report.*
 !report.bbl
 !report.bib
 !report.tex
+
+# Offload folder
+data/offload

@@ -9,9 +9,9 @@ import faiss
 import numpy as np
 
 # Hardcoded file names
-INPUT_FILE = 'video_game_wikipedia_pages.txt'
-FAISS_INDEX_FILE = 'vector.index'
-OUTPUT_FILE = 'video_game_index_mapping.json'
+INPUT_FILE = '../data/upcoming_video_games.txt'
+FAISS_INDEX_FILE = '../data/vector.index'
+OUTPUT_FILE = '../data/video_game_index_mapping.json'
 
 # Prepare session with desktop User-Agent
 session = requests.Session()

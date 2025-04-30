@@ -3,8 +3,8 @@ import numpy as np
 import json
 from sentence_transformers import SentenceTransformer
 
-FAISS_INDEX_FILE = 'vector.index'
-MAPPING_FILE = 'video_game_index_mapping.json'
+FAISS_INDEX_FILE = '../data/vector.index'
+MAPPING_FILE = '../data/video_game_index_mapping.json'
 
 # Load everything
 index = faiss.read_index(FAISS_INDEX_FILE)
@@ -12,7 +12,6 @@ with open(MAPPING_FILE, 'r', encoding='utf-8') as f:
     mapping = json.load(f)
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-model = model.to('cuda')
 
 def search(query, top_k=5):
     query_vec = model.encode([query]).astype('float32')
@@ -25,6 +24,7 @@ def search(query, top_k=5):
             results.append({
                 'title': mapping[str(idx)]['title'],
                 'url': mapping[str(idx)]['url'],
+                'text': mapping[str(idx)]['text'],
                 'distance': dist
             })
     return results
