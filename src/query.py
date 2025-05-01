@@ -30,7 +30,7 @@ def search(query, top_k=5):
     return results
 
 # Example
-query = "who composed the score for the last of us part 2?"
+query = "Which upcoming game has Lashana Lynch acting in it?"
 results = search(query)
 
 for r in results:
