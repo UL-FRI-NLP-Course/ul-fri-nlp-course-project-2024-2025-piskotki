@@ -32,7 +32,7 @@ class RAGSystem:
 
         self.generator = pipeline("text-generation", model=model, 
                                 tokenizer=self.tokenizer, 
-                                return_full_text=True, do_sample=True)
+                                return_full_text=False)
         
         self.emb_model = SentenceTransformer("all-mpnet-base-v2")
         if torch.cuda.is_available():
@@ -66,15 +66,18 @@ class RAGSystem:
         partials = []
         for idx in chosen:
             chunk = self.chunked_passages[idx]
-            prompt = f"Context:\n{chunk}\n\nQuestion: {query}\nAnswer briefly:"
+            prompt = (
+                f"Context:\n{chunk}\n\n"
+                f"Question: {query}\nAnswer briefly:"
+            )
             out = self.generator(prompt, max_new_tokens=128, do_sample=True)[0]
             ans = out["generated_text"]
             partials.append(ans)
 
         combined = "\n".join(f"- {a}" for a in partials)
         fuse_prompt = (
-            f"I have these partial answers:\n{combined}\n\n"
-            f"Please synthesize into one concise, coherent answer."
+            f"I have these partial answers:\n{combined}\n\n" 
+            f"Please synthesize into one concise, coherent answer.\n\n Answer: "
         )
         fused = self.generator(fuse_prompt, max_new_tokens=256, do_sample=True)[0]
         return fused["generated_text"]
