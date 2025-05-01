@@ -1,2 +1,9 @@
-requests==2.32.3
-beautifulsoup4==4.13.4
+requests>=2.32.3           
+beautifulsoup4>=4.13.4     
+sentence-transformers>=4.1.0 
+faiss-cpu>=1.11.0         
+numpy>=2.2.5              
+transformers>=4.51.3      
+torch>=2.7.0              
+bitsandbytes>=0.45.5      
+accelerate>=1.6.0         
