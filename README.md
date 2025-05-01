@@ -1,11 +1,11 @@
-# Natural language processing course 2024/25: `Conversational Agent with Retrieval-Augmented Generation`
+# Natural Language Processing Course 2024/25: `Conversational Agent with Retrieval-Augmented Generation`
 
 ## Table of Contents
 1. [About](#about)
-2. [Team: Piškotki](#team)
+2. [Team: Piškotki](#team-piškotki)
 3. [Repository Structure](#repository-structure)
-3. [Building Report](#building-report)
-3. [References](#references)
+4. [Running the Project](#running-the-project)
+5. [References](#references)
 
 ## About
 This is <b>Project 1</b> which is part of the Natural Language Processing course for the academic year 2024/2025, where we aim to explore advanced techniques in conversational AI. Specifically, we will focus on Retrieval-Augmented Generation (RAG) to develop a chatbot capable of retrieving and integrating external information in real-time.
@@ -16,14 +16,55 @@ This is <b>Project 1</b> which is part of the Natural Language Processing course
 - Blaž Grilj
 
 ## Repository Structure  
-- **`data/`**: Datasets for training and evaluation, including external documents.  
-- **`report/`**: Contains all report documents, both source files and PDFs.
-- **`src/`**: Contains the source code needed for the project.
+- **`data/`**: Contains:
+  - Datasets and documents
+  - FAISS vector index files
+  - `testing_questions.txt` - Evaluation queries
 
-## Building Report
-Must have installed docker.
+- **`report/`**: Project report and documentation
 
-Run `./compile.sh` in the `./report` directory. The script will generate a couple of intermediate files, which can be ignored. Final PDF is saved as `report.pdf`
+- **`src/`**: Source code:
+  - `crawler.py` - Web crawling functionality
+  - `main.py` - Command-line interface
+  - `query.py` - Document retrieval system
+  - `rag_model.py` - Core RAG implementation
+  - `scraper.py` - Web scraping utilities
+
+## Running the Project
+
+### Prerequisites
+- Python 3.8+
+- pip package manager
+- CUDA-enabled GPU (recommended)
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/UL-FRI-NLP-Course/ul-fri-nlp-course-project-2024-2025-piskotki.git
+   cd ul-fri-nlp-course-project-2024-2025-piskotki
+   ```
+
+2. Install required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Usage Options
+
+#### Single Question Mode
+```bash
+python src/main.py "Your question in quotes"
+```
+
+#### Batch Mode (Console Output)
+```bash
+python src/main.py questions.txt
+```
+
+#### Option 3: Batch Mode (File Output)
+```bash
+python src/main.py input_questions.txt output_answers.txt
+```
 
 ## References
 - [Gao, Y. et al. (2024) Retrieval-augmented generation for large language models: A survey](https://arxiv.org/abs/2312.10997)
