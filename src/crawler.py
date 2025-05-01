@@ -29,10 +29,10 @@ def save_progress():
     Write current progress to disk.
     """
     with lock:
-        with open('../data/video_game_wikipedia_pages.txt', 'w', encoding='utf-8') as f:
+        with open('data/video_game_wikipedia_pages.txt', 'w', encoding='utf-8') as f:
             for page in sorted(game_pages):
                 f.write(page + '\n')
-        with open('../data/visited_categories.txt', 'w', encoding='utf-8') as f:
+        with open('data/visited_categories.txt', 'w', encoding='utf-8') as f:
             for cat in sorted(visited_categories):
                 f.write(cat + '\n')
     print(f"[Checkpoint] {len(game_pages)} pages, {len(visited_categories)} categories saved.")

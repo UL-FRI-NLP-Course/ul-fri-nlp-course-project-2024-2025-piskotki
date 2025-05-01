@@ -3,8 +3,8 @@ import numpy as np
 import json
 from sentence_transformers import SentenceTransformer
 
-FAISS_INDEX_FILE = '../data/vector.index'
-MAPPING_FILE = '../data/video_game_index_mapping.json'
+FAISS_INDEX_FILE = 'data/vector.index'
+MAPPING_FILE = 'data/video_game_index_mapping.json'
 
 # Load everything
 index = faiss.read_index(FAISS_INDEX_FILE)
@@ -30,8 +30,8 @@ def search(query, top_k=5):
     return results
 
 # Example
-query = "Which upcoming game has Lashana Lynch acting in it?"
-results = search(query)
+#query = "Which upcoming game has Lashana Lynch acting in it?"
+#results = search(query)
 
-for r in results:
-    print(f"Title: {r['title']}\nURL: {r['url']}\nDistance: {r['distance']:.4f}\n")
+#for r in results:
+#    print(f"Title: {r['title']}\nURL: {r['url']}\nDistance: {r['distance']:.4f}\n")
