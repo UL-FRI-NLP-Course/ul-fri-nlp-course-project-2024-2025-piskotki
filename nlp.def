@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%files
+    environment.yml /environment.yml
+
+%post
+    conda env create -f /environment.yml
+    
+    # Make the conda environment the default Python
+    ln -sf /opt/conda/envs/nlp-project/bin/python /usr/bin/python
+    ln -sf /opt/conda/envs/nlp-project/bin/pip /usr/bin/pip
+    
+    # Add CUDA environment variables
+    echo "export PATH=/usr/local/cuda/bin:$PATH" >> $SINGULARITY_ENVIRONMENT
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> $SINGULARITY_ENVIRONMENT
+
+%environment
+    export PYTHONNOUSERSITE=1
+    export CUDA_VISIBLE_DEVICES=all
+    export PATH=/opt/conda/envs/nlp-project/bin:$PATH
