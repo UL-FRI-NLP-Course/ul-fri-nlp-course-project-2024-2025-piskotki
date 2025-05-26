@@ -1,6 +1,10 @@
 # build nlp.sif (singularity container), you need to define nlp.def first.
 `singularity build nlp.sif nlp.def`
 
+
+# build singularity with ignore fakeroot 
+`singularity build --fakeroot nlp.sif singularity.def`
+
 # To get the interactive shell inside the container
 `singularity shell nlp.sif`
 

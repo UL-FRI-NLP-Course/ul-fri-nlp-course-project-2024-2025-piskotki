@@ -1,0 +1,24 @@
+Bootstrap: docker
+From: continuumio/miniconda3:latest
+
+%post
+    # Create working directory
+    mkdir -p /workspace
+    cd /workspace
+    
+    # Copy and install environment
+    conda env create -f /workspace/environment.yml
+    
+    # Cleanup
+    conda clean -afy
+
+%files
+    environment.yml /workspace/environment.yml
+
+%environment
+    export PATH=/opt/conda/envs/modes/bin:$PATH
+
+%runscript
+    source /opt/conda/etc/profile.d/conda.sh
+    conda activate modes
+    exec "$@"
