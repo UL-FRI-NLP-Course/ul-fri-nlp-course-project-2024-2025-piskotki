@@ -3,6 +3,7 @@ import faiss
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, BitsAndBytesConfig
 from sentence_transformers import SentenceTransformer
 import torch
+from retriever import Retriever
 
 class RAGSystem:
     def __init__(self):
@@ -81,3 +82,12 @@ class RAGSystem:
         )
         fused = self.generator(fuse_prompt, max_new_tokens=256, do_sample=True)[0]
         return fused["generated_text"]
+    
+    def generate_response_with_retriever(self, query, top_k=5):
+        """Use Retriever to get relevant chunks and generate response"""
+        retriever = Retriever()
+        hits = retriever.retrieve_and_process(query)
+        
+        prompt = retriever.build_prompt(hits, query)
+        out = self.generator(prompt, max_new_tokens=256, do_sample=True)[0]
+        return out["generated_text"]
