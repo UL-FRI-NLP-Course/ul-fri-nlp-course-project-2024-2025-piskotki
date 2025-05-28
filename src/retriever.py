@@ -1,10 +1,10 @@
-from googlesearch import search
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from wiki_scraper import WikiScraper
 import faiss
 from sentence_transformers import SentenceTransformer
 import torch
 import numpy as np
+import requests
 
 class Retriever:
     def __init__(self):
@@ -13,11 +13,45 @@ class Retriever:
         if torch.cuda.is_available():
             self.embedder = self.embedder.to('cuda')
 
-    def retrieve_wikipedia_links(self, query, num_results=100):
-        wiki_links = [url for url in search(query, num_results=num_results) if "wikipedia.org" in url]
-        # print pages
-        for link in wiki_links:
-            print(link)
+    def retrieve_wikipedia_links(self, query, num_results=5):
+        base_url = 'http://207.154.241.192/:8080/search'
+        params = {
+            'q': query + " site:wikipedia.org",
+            'format': 'json',
+            'pageno': 1,
+            'categories': 'general',
+            'language': 'en',
+            'safesearch': 0,
+            'engines': 'google,bing,duckduckgo,brave',
+            'max_results': num_results
+        }
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'Accept': 'application/json',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': 'http://207.154.241.192/:8080/',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+        
+        try:
+            response = requests.get(base_url, params=params, headers=headers, timeout=30)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTP Error: {e}")
+            print(f"Response status: {response.status_code}")
+            print(f"Response text: {response.text}")
+            return []
+        
+        results = response.json().get('results', [])
+        
+        wiki_links = []
+        for result in results:
+            url = result.get('url', '')
+            if 'wikipedia.org' in url:
+                wiki_links.append(url)
+            if len(wiki_links) >= num_results:
+                break
+        
         return wiki_links
 
     def scrape_wikipedia_pages(self, wiki_links):
@@ -39,7 +73,7 @@ class Retriever:
         chunks = splitter.create_documents([text])
         return [chunk.page_content.lstrip(" .,!?\n") for chunk in chunks]
     
-    def retrieve_and_process(self, query, num_results=100, chunk_size=2000, chunk_overlap=200):
+    def retrieve_and_process(self, query, num_results=2, chunk_size=2000, chunk_overlap=200):
         wiki_links = self.retrieve_wikipedia_links(query, num_results)
         scraped_pages = self.scrape_wikipedia_pages(wiki_links)
         
@@ -100,7 +134,7 @@ class Retriever:
         return "\n".join(prompt)
 
 
-# query = "Will I be able to play Silk Song on my Macbook?"
+# query = "What will the new Mafia game be about?"
 # retriever = Retriever()
 # results = retriever.retrieve_and_process(query)
 # for title, chunk_text, distance in results:
