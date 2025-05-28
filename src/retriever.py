@@ -14,7 +14,7 @@ class Retriever:
             self.embedder = self.embedder.to('cuda')
 
     def retrieve_wikipedia_links(self, query, num_results=5):
-        base_url = 'http://207.154.241.192/:8080/search'
+        base_url = 'http://207.154.241.192:8080/search'
         params = {
             'q': query + " site:wikipedia.org",
             'format': 'json',
@@ -29,7 +29,7 @@ class Retriever:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
             'Accept': 'application/json',
             'Accept-Language': 'en-US,en;q=0.9',
-            'Referer': 'http://207.154.241.192/:8080/',
+            'Referer': 'http://207.154.241.192:8080/',
             'X-Requested-With': 'XMLHttpRequest'
         }
         
