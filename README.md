@@ -66,6 +66,12 @@ python src/main.py questions.txt
 python src/main.py input_questions.txt output_answers.txt
 ```
 
+
+## Evaluate
+```bash
+python rag_evaluator.py path/to/your/answers.csv --output path/to/output.csv --plots-dir path/to/plots
+```
+
 ## References
 - [Gao, Y. et al. (2024) Retrieval-augmented generation for large language models: A survey](https://arxiv.org/abs/2312.10997)
 - [Chen, J., Lin, H., Han, X., & Sun, L. (2024). Benchmarking Large Language Models in Retrieval-Augmented Generation](https://ojs.aaai.org/index.php/AAAI/article/view/29728)
