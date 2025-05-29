@@ -2,6 +2,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+import time
 from pathlib import Path
 from rag_model import RAGSystem
 from query import search  # Your existing search function
@@ -40,14 +41,21 @@ def main():
             print(result)
     elif len(sys.argv) == 3:
         # Mode 3: Input file to output file
-        with open(sys.argv[1], 'r', encoding='utf-8') as f_in, open(sys.argv[2], 'w', encoding='utf-8') as f_out:
-            queries = [line.strip() for line in f_in if line.strip()]
-            for query in queries:
-                # most_relevant = search(query, 1)[0]
-                # rag.process_document(most_relevant["text"])
-                # result = rag.generate_response(query)
-                result = rag.generate_response_with_retriever(query, top_k=5)
-                f_out.write(f"Q: {query}\nA: {result}\n{'='*50}\n\n")
+        timestamp = int(time.time() * 1000)
+        model_answers_filename = f"model_answers_{timestamp}.txt"
+        with open(sys.argv[1], 'r', encoding='utf-8') as f_in, \
+                open(sys.argv[2], 'w', encoding='utf-8') as f_out, \
+                open(model_answers_filename, 'w', encoding='utf-8') as f_model:
+                
+                queries = [line.strip() for line in f_in if line.strip()]
+                for query in queries:
+                    result = rag.generate_response_with_retriever(query, top_k=5)
+                    
+                    # Write formatted output to original output file
+                    f_out.write(f"Q: {query}\nA: {result}\n{'='*50}\n\n")
+                    
+                    # Write only the result to the model answers file
+                    f_model.write(f"{result}\n")
 
 if __name__ == "__main__":
     main()
