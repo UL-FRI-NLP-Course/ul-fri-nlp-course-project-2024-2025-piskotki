@@ -74,7 +74,7 @@ class RAGSystem:
             f"Please synthesize into one concise, coherent answer.\n\n Answer: "
         )
         fused = self.generator(fuse_prompt, max_new_tokens=256, do_sample=True)[0]
-        return fused["generated_text"]
+        return fused["generated_text"].replace('\n', '')
     
     def generate_response_with_retriever(self, query, top_k=5):
         """Use Retriever to get relevant chunks and generate response"""
@@ -83,4 +83,4 @@ class RAGSystem:
         
         prompt = retriever.build_prompt(hits, query)
         out = self.generator(prompt, max_new_tokens=256, do_sample=True)[0]
-        return out["generated_text"]
+        return out["generated_text"].replace('\n', '')
