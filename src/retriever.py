@@ -73,23 +73,39 @@ class Retriever:
         chunks = splitter.create_documents([text])
         return [chunk.page_content.lstrip(" .,!?\n") for chunk in chunks]
     
-    def retrieve_and_process(self, query, num_results=2, chunk_size=2000, chunk_overlap=200):
+    def retrieve_and_process(self, query, num_results=2, chunk_size=500, chunk_overlap=200):
         wiki_links = self.retrieve_wikipedia_links(query, num_results)
+        if not wiki_links:
+            print("No Wikipedia links found.")
+            return []
+
         scraped_pages = self.scrape_wikipedia_pages(wiki_links)
-        
+        if not scraped_pages:
+            print("No pages successfully scraped.")
+            return []
+
         processed_chunks = []
         for title, text in scraped_pages:
             chunks = self.split_text_into_chunks(text, chunk_size, chunk_overlap)
             for chunk in chunks:
                 processed_chunks.append((title, chunk))
 
+        if not processed_chunks:
+            print("No text chunks generated.")
+            return []
+
         # Embed chunks
         embeddings, metadata = self.embed_chunks(processed_chunks)
+        if embeddings.shape[0] == 0:
+            print("Embedding failed or returned empty array.")
+            return []
+
         # Build FAISS index
         index = self.build_faiss_index(embeddings)
+
         # Search for the query
         hits = self.search_chunk(index, metadata, query)
-        
+
         return hits
     
     def embed_chunks(self, chunks):

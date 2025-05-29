@@ -1,6 +1,6 @@
 import numpy as np
 import faiss
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from sentence_transformers import SentenceTransformer
 import torch
 from retriever import Retriever
@@ -15,20 +15,13 @@ class RAGSystem:
         
     def initialize_models(self):
         """Initialize all models and components"""
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_compute_dtype="float16",
-        )
 
         model_name = "deepseek-ai/deepseek-llm-7b-chat"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            device_map="auto",
-            quantization_config=bnb_config,
-            torch_dtype="auto",
+            torch_dtype=torch.float16,
+            device_map="auto"
         )
 
         self.generator = pipeline("text-generation", model=model, 
