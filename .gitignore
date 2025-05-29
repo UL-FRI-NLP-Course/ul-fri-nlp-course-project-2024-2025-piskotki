@@ -138,3 +138,6 @@ report.*
 
 # Offload folder
 data/offload
+
+# Results folder
+data/results
