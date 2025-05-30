@@ -80,9 +80,10 @@ Our RAG system consists of three main components:
    ```bash
    pip install -r requirements.txt
    ```
-
-
-
+#### SLURM
+```bash
+singularity build --ignore-fakeroot-command containers/container-rag-piskotki.sif ul-fri-nlp-course-project-2024-2025-piskotki/Singularity.def
+```
 ### Usage Options
 #### Single Question Mode
 To ask a single question, you pass a question string as an input argument to the `main.py` script.
