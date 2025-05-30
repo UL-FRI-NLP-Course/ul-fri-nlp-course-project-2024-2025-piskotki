@@ -63,7 +63,7 @@ def main():
             print(f"Processed {i + 1}/{len(questions)} questions")
 
     df = pd.DataFrame(results)
-    df.to_csv(output_path, index=False)
+    df.to_csv(timestamped_output, index=False)
 
     avg_semantic = df['Semantic Similarity'].mean()
     print("\nSummary:")

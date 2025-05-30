@@ -11,8 +11,5 @@
 #SBATCH --error=logs/piskotki-project-%J.err
 #SBATCH --job-name="Piškotki NLP project"
 
-# srun singularity exec --nv ./containers/container-rag-piskotki.sif python \
-#   ul-fri-nlp-course-project-2024-2025-piskotki/src/main.py ul-fri-nlp-course-project-2024-2025-piskotki/data/testing_questions.txt ul-fri-nlp-course-project-2024-2025-piskotki/data/model_answers.txt
-
-srun singularity exec --nv ./containers/container-rag-piskotki.sif python \
-  ul-fri-nlp-course-project-2024-2025-piskotki/src/main.py "Which game engine was Clair Obscur: Expedition 33 developed with?"
+srun singularity exec --nv ./piskotki.sif python \
+  ./src/main.py "Which game engine was Clair Obscur: Expedition 33 developed with?"
