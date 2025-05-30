@@ -1,0 +1,24 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+
+%post
+    apt-get update && apt-get install -y git wget curl build-essential
+    pip install --upgrade pip
+
+    # Install specific versions that work with Python 3.7
+    pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu118
+    pip install \
+        faiss-gpu \
+        transformers \
+        datasets \
+        flask \
+        pandas \
+        numpy \
+        sentence-transformers \
+        accelerate \
+        langchain \
+        matplotlib \
+        scipy
+%environment
+    export LC_ALL=C
+    export LANG=C
