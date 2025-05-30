@@ -41,7 +41,8 @@ Our RAG system consists of three main components:
 
 
 
-## Repository Structure  
+## Repository Structure
+- **`archive/`**: Old baseline code  
 - **`data/`**: Contains:
   - `testing_questions.txt` - Evaluation queries 
   - `chatgpt_answers.txt` - ChatGPT's with internet search answers to `testing_questions.txt`
@@ -80,7 +81,7 @@ Our RAG system consists of three main components:
    ```bash
    pip install -r requirements.txt
    ```
-#### SLURM
+#### SLURM (Recommended)
 ```bash
 singularity build --ignore-fakeroot-command containers/container-rag-piskotki.sif ul-fri-nlp-course-project-2024-2025-piskotki/Singularity.def
 ```
