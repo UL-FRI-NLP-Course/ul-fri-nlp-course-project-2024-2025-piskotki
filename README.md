@@ -162,7 +162,3 @@ Lashana Lynch stars in Directive 8020, a sci-fi horror game where she plays astr
 
 ## Archive
 Contains old project where we initially used web scraping (search engines like Google search and DuckDuckGo) to get to the Wikipedia pages, but they were sadly too unreliable and rate limited.
-
-## References
-- [Gao, Y. et al. (2024) Retrieval-augmented generation for large language models: A survey](https://arxiv.org/abs/2312.10997)
-- [Chen, J., Lin, H., Han, X., & Sun, L. (2024). Benchmarking Large Language Models in Retrieval-Augmented Generation](https://ojs.aaai.org/index.php/AAAI/article/view/29728)
