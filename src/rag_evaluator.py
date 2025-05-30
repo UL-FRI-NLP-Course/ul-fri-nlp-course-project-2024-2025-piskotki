@@ -7,12 +7,10 @@ from sentence_transformers import SentenceTransformer
 import scipy.spatial.distance as distance
 
 def read_file_lines(file_path):
-    """Read all lines from a file, stripping whitespace."""
     with open(file_path, 'r', encoding='utf-8') as file:
         return [line.strip() for line in file if line.strip()]
 
 def calculate_semantic_similarity(model, reference, candidate):
-    """Calculate semantic similarity using sentence embeddings."""
     ref_embedding = model.encode(reference)
     cand_embedding = model.encode(candidate)
     return 1 - distance.cosine(ref_embedding, cand_embedding)
@@ -65,7 +63,7 @@ def main():
             print(f"Processed {i + 1}/{len(questions)} questions")
 
     df = pd.DataFrame(results)
-    df.to_csv(args.output, index=False)
+    df.to_csv(output_path, index=False)
 
     avg_semantic = df['Semantic Similarity'].mean()
     print("\nSummary:")
